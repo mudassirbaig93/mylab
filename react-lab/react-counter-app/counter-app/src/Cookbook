@@ -1,0 +1,9 @@
+- create-react-app counter-app
+- npm i bootstrap@4.1.1
+- import bootstrap in index.js
+ 
+- created component folder in src, and a counter.jspx there
+! we have installed 'Simple React Extension' that gives us shortcut to import react components i.e. imrc, and generate class component i.e. cc
+
+- import new Counter component instead of App in index.js and retrun Counter in ReactDOM.render
+- We keep state elements in components that usually contains the data to show, and React tries to sync it between Virtual DOM and actual DOM
