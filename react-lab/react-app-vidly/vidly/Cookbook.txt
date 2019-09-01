@@ -1,0 +1,25 @@
+
+Component Lifecycle hooks: - Important to know when writing apps
+
+Life cycle hooks = special methods that we can create and react will automatically call them.
+
+
+Phase 1 - Mounting
+Phase 2 - Update
+Phase 3 - Delete
+
+* Mounting = Element created and inserted into the DOM.
+    Available Lifecycle Hooks(by order) = 
+                1. constructor
+                2. render
+                3. componentDidMount
+
+
+* Update = Whenever state is changed
+     Available Lifecycle Hooks(by order) = 
+                1. render
+                2. componentDidUpdate
+
+* Unmount/Delete = Component Delete
+      Available Lifecycle Hooks(by order) = 
+                1. componentWillUnmount
