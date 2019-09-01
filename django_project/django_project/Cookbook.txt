@@ -1,0 +1,106 @@
+        Up and Running with Django
+        ==========================
+
+- Install Virtual Environment - Recommended Practice
+
+. pip install virtualenv
+. virtualenv myenv
+. source myenv/bin/activate
+
+- Install django
+
+. pip install  django
+
+
+- Start django
+
+. django-admin startproject mysite
+ - manage.py = command line utility
+ - wsgi.py = python server
+ - settings.py = config settings e.g. Database settings
+
+ ! Tip : If using virtualenv running `pip freeze > requirements.txt` will keep requirements.txt upto date, better way to manage dependencies
+
+to run server
+. python manage.py runserver 0.0.0.0:8000
+
+to create new app run
+. python manage.py startapp blog
+
+* register your app in 'INSTALLED_APPS' in settings.py
+* if you want model to be controlled with admin panel, you can simple write model and then register it in admin.py of your app
+* use urls.py to define routes and view.py to serve requests with HTTP response.
+* Django has it its own templating engine quite similar to jinja2 and it lets user write code blocks in html templates,
+  create 'templates' directory in your app and then create a directory with app_name in templates folder.
+  We can use whatever info that is being passed as "context" in views->render() in our templates.
+
+* To serve static content like css, create 'static' directory in our app and then create a new directory with app_name in static directory.
+  use {% load static %} on top of templates and {% static 'blog/main.css' %} while referencing files.
+
+* Django has many templating tags like for,if, extend, include, comment etc -- programing within templates
+  Another interesting feature in templating engine = filters i.e. | (pipes) special functions like add, capfirst etc
+
+* Two types of views in Django with bit syntactical difference
+    - Function based views
+    - Class based views
+        . Simple Class based view
+        . class based generic view
+
+* Django has its own builtin ORM that lets you deal with DB in easy Object Oriented way.
+  Create class (i.e. collection) extending models.Model in your models.py, define every field, constraints and relationships
+  run `python manage.py makemigrations`
+  then `python manage.py migrate`
+
+  -> Command line utility to test different things
+  run `python manage.py shell` , import your models there and test them.
+
+  e.g. class Post
+  to find objects -> Post.objects.all() , Post.objects.filter(field=value) etc
+  to insert -> Post(field=val, field2=val ...).save()
+
+  -> Cool thing -> if we have relationship among 2 models for instance Post with Author(i.e. User - Another Model in django.conrtib.auth.models import User - Builtin)
+                  this is one to many relationship and we want to see all posts with particular user, all we need to do is
+                  `myuser.post_set.all()` i.e. userobj.model_set.all()
+                  similarly to create more posts for this user write
+                  `myuser.post_set.create(field_vals)`
+
+  -> Another cool feature is django admin
+                  python manage.py createsuperuser
+               register your modeks in app/admin.py and then you can modify your models with a nice built in admin portal accessible at localhost:8000:/admin/
+
+
+* Registration Forms:
+    Django has a utility class called UserCreationForm that we can use to create simple forms. To customize form (add new field etc) inherit you class with
+    UserCreationForm and add fields in `Meta` inner class. -> check user app->forms.py
+
+    Django 3rd paty app to work with forms = 'crispy forms'
+    `pip install django-crispy-forms` add it in INSTALLED_APPS (setting.py)
+
+* Can simply inherit ModelForms as well and write field validation functions there.
+
+* Authorization System - Login/Logout:
+    Django already has Class views for Login/Logout management in django.contrib.auth import views as auth_views, we can pass our templates as
+    auth_views.LoginView.as_view(template_name='users/login.html') -> check urls.py
+    To redirect to home page from Login, add `LOGIN_REDIRECT_URL= route_name` in settings.py,
+    to create views only accessible to logged in users use django.contrib.auth.decorators import required_login as decorator on those views
+
+
+* Adding Profile, picture etc:
+    created new model in users app, we want one to one relationship between User and Profile model,
+    add user obj and image as ImageField, run makemigration and then migrate, register Profile model in admin.py
+
+    When we upload a pic django creates a profile_pics directory in main project, to change this goto settings.py
+    add MEDIA_ROOT -> where we will be keeping media files, e.g. os.path.join(BASE_DIR, 'media')
+    and MEDIA_URL = '/media/' -> public url
+
+    Pillow package can be used to resize pictures
+
+* DJANGO signals = perform some action on some event. We can create Profiles from admin portal once our model is registered in admin.py
+but what if we need to create profile when a user registers
+
+    -> singals to the rescue:
+        create signals.py file in you app, it needs to have a sender (our model for above example User model) and a receiver as a decorator
+        check signals.py in users app
+
+* URL routing - passing information via url -> url('profile/<int:id>/', my_view_function, name='profile'), now we can receive this 'id' in our my_view_function
+and use it as per requirement.
