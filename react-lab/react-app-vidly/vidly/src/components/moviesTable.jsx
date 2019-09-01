@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Like from "./common/like";
 import Table from "./common/table";
-import Link from "react-router-dom/Link";
+import { Link } from "react-router-dom";
 
 class MoviesTable extends Component {
   columns = [
@@ -43,12 +43,17 @@ class MoviesTable extends Component {
     const { movies, onSort, sortColumn } = this.props;
 
     return (
-      <Table
-        columns={this.columns}
-        sortColumn={sortColumn}
-        onSort={onSort}
-        data={movies}
-      />
+      <React.Fragment>
+        <Link className="btn btn-primary" to="/movies/new">
+          New Movie
+        </Link>
+        <Table
+          columns={this.columns}
+          sortColumn={sortColumn}
+          onSort={onSort}
+          data={movies}
+        />
+      </React.Fragment>
     );
   }
 }
