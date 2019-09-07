@@ -16,3 +16,6 @@ def reverse_string(string):
 
 # Can start worker with following command
 # celery -A tasks worker --loglevel=INFO
+
+# To restart rabbitmq broker
+#service rabbitmq-server restart
