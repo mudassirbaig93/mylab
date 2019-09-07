@@ -1,0 +1,17 @@
+Core modules:
+- OS
+- FS - FileSystem
+- Events
+- HTTP
+
+
+- We export functions, variables etc from module using module.exports
+
+---- Module wrapper function -----
+In node, whatever we write in a module it automatically get enwrapped in a
+self invoked function that has some special arguments like require, exports,
+module, __filename, __dirname
+
+---------- For express --------
+npm init ---yes for initializing package.json file
+npm i express
