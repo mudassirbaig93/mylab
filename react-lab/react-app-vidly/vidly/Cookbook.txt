@@ -23,3 +23,19 @@ Phase 3 - Delete
 * Unmount/Delete = Component Delete
       Available Lifecycle Hooks(by order) = 
                 1. componentWillUnmount
+
+=====================
+Usefule libraries
+- For Validation 
+    Joi
+- For working with arrays/objects
+    loadash
+- For routing
+    react-router-dom
+- For http calls
+    axios
+- for toast notifications
+    react-toastify
+- for logging
+    Use sentry server, with raven linrary
+

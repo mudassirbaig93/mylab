@@ -15,3 +15,27 @@ module, __filename, __dirname
 ---------- For express --------
 npm init ---yes for initializing package.json file
 npm i express
+
+- Nodemon, module to restart server on code changes
+run app with following cmd
+- nodemon index.js
+
+-----------------------------
+. Express Middleware or Middle ware function: 
+    function that takes a request and either pass a response or pass it to another middleware function
+    e.g. `app.use(express.json());` to read req body to json and we are doing it at the start of request processing pipeline
+        similarly `(req, res)=>{}` in route handler is also a example of middleware function
+    
+    We can build our own middlwares as well, which we usually do for logging, authentication etc
+
+    There are some cool 3rd party middlewares as well, e.g. Morgan - to log all incoming requests, helmet for security etc
+
+
+-------------
+- rc package is popular for managing configuration but there is 1 package i.e. `config` which is a little more cleaner.
+- `debug` package for debugging.
+
+----- Popular templating engines with express ------
+- Pug
+- Mustache
+- EJS

@@ -1,0 +1,4 @@
+{
+  "mail": { "password": "app_password" },
+  "note": "app_password is actually an environment variable"
+}
