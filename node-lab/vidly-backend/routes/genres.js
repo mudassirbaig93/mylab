@@ -1,3 +1,6 @@
+const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
+
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
@@ -12,7 +15,9 @@ router.get("/", (req, res) => {
   res.send(genres);
 });
 
-router.post("/", (req, res) => {
+// auth is a middleware fn, so we are protecting this route with middleware function
+// In other words, only authenticated user will be able to use this route
+router.post("/", auth, (req, res) => {
   const result = validateGenre(req.body);
   const { error } = result;
   if (error) {
@@ -33,7 +38,7 @@ router.get("/:id", (req, res) => {
   res.send(genre);
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", auth, (req, res) => {
   let genre = genres.find(g => g.id === parseInt(req.params.id));
   if (!genre) {
     res.status(404).send("Genre not found");
@@ -50,7 +55,8 @@ router.put("/:id", (req, res) => {
   res.send(genre);
 });
 
-router.delete("/:id", (req, res) => {
+// Allow delete only to authorized and admin users
+router.delete("/:id", [auth, admin], (req, res) => {
   let genre = genres.find(g => g.id === parseInt(req.params.id));
   if (!genre) {
     res.status(404).send("Genre not found");
