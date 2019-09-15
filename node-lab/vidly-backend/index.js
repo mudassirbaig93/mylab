@@ -5,6 +5,7 @@ const app = express();
 require("./startup/logging")();
 require("./startup/db")();
 require("./startup/config")();
+require("./startup/prod")(app);
 require("./startup/routes")(app); // startup module is calling a function so we are just calling it here
 
 const port = process.env.PORT || 3000;
