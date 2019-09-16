@@ -42,11 +42,15 @@ class MoviesTable extends Component {
   render() {
     const { movies, onSort, sortColumn } = this.props;
 
+    const { user } = this.props;
+
     return (
       <React.Fragment>
-        <Link className="btn btn-primary" to="/movies/new">
-          New Movie
-        </Link>
+        {user && (
+          <Link className="btn btn-primary" to="/movies/new">
+            New Movie
+          </Link>
+        )}
         <Table
           columns={this.columns}
           sortColumn={sortColumn}
