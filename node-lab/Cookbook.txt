@@ -39,3 +39,20 @@ run app with following cmd
 - Pug
 - Mustache
 - EJS
+
+
+
+-------- Adding sqlite and sequelize in express-bits project --------
+write sqlite3 on console to get access to db shell
+- node_modules/.bin/sequelize init ------ this will initialize directory structure
+It will create config directory, seeders, migration etc
+
+- create model using sequelize shell
+node_modules/.bin/sequelize model:generate --name Contact --attributes firstName:string,lastName:string,phone:string,email:string
+above will also add an entry in migrations to create table
+
+- run migration
+node_modules/.bin/sequelize db:migrate
+
+
+

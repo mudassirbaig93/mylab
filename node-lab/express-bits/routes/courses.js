@@ -2,17 +2,21 @@ const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
 
+const db = require("../models");
+
 const courses = [
   { id: 1, name: "Course 1" },
   { id: 2, name: "Course 2" },
   { id: 3, name: "Course 3" }
 ];
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+  //res.send(courses);
+  const courses = await db.Courses.findAll();
   res.send(courses);
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const result = validateCourse(req.body);
   const { error } = result;
   if (error) {
@@ -21,29 +25,30 @@ router.post("/", (req, res) => {
   }
 
   const course = {
-    id: courses.length + 1,
-    name: req.body.name // used express.json middleware to parse body in json
+    name: req.body.name, // used express.json middleware to parse body in json
+    createdAt: new Date(),
+    updatedAt: new Date()
   };
-  courses.push(course);
-  res.send(course);
+  //courses.push(course);
+  try {
+    const n_course = await db.Courses.create(course);
+    res.send(n_course);
+  } catch (ex) {
+    res.status(400).send("Failed to add course");
+  }
 });
 
-router.get("/:id", (req, res) => {
-  let course = courses.find(c => c.id === parseInt(req.params.id));
-  //   let course = courses.filter(c => {
-  //     return c.id === parseInt(req.params.id);
-  //   });
+router.get("/:id", async (req, res) => {
+  //let course = courses.find(c => c.id === parseInt(req.params.id));
+  let course = await db.Courses.findByPk(parseInt(req.params.id));
   if (!course) res.status(404).send("Course not found");
   res.send(course);
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
   //Lookup the course
-  let course = courses.find(c => c.id === parseInt(req.params.id));
-  if (!course) {
-    res.status(404).send("Course not found");
-    return;
-  }
+  let course = await db.Courses.findByPk(parseInt(req.params.id));
+  if (!course) return res.status(404).send("Course not found");
 
   // Validate
   const result = validateCourse(req.body);
@@ -54,21 +59,26 @@ router.put("/:id", (req, res) => {
   }
 
   // Update
-  course.name = req.body.name;
+  course = await db.Courses.update(
+    {
+      name: req.body.name,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+    { where: { id: course.id } }
+  );
   res.send(course);
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
   //Lookup the course
-  let course = courses.find(c => c.id === parseInt(req.params.id));
-  if (!course) {
-    res.status(404).send("Course not found");
-    return;
-  }
+  let course = await db.Courses.findByPk(parseInt(req.params.id));
+  if (!course) return res.status(404).send("Course not found");
 
   // Delete
-  const index = courses.indexOf(course);
-  courses.splice(index, 1);
+  //const index = courses.indexOf(course);
+  //courses.splice(index, 1);
+  await db.Courses.destroy({ where: { id: course.id } });
 
   res.send(course);
 });

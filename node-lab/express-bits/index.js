@@ -6,6 +6,8 @@ const auth = require("./middleware/authentication");
 const morgan = require("morgan");
 const config = require("config");
 
+const db = require("./models");
+
 // require('debug') returns a function, to see messages with below debugger we will have to set environment variable DEBUG=app:startup
 const startupDebugger = require("debug")("app:startup");
 const dbDebugger = require("debug")("app:db");
