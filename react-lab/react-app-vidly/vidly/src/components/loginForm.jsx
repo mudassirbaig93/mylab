@@ -1,7 +1,8 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { login, performLogin } from "../services/authService";
+import { login, performLogin, getActiveUser } from "../services/authService";
+import Redirect from "react-router-dom/Redirect";
 
 class LoginForm extends Form {
   // We don't access DOM elements directly in React so to access a form field we need to create a reference
@@ -35,8 +36,9 @@ class LoginForm extends Form {
       // We are displaying username in App component which only renders once at the begining so we need to do full app reload at this point
       // passing location from router
       const { state } = this.props.location;
-      console.log(state);
-      window.location = state ? state.from.pathname : "/";
+      const new_loc = state && state.from.pathname ? state.from.pathname : "/";
+      console.log("new loc: ", new_loc);
+      window.location = new_loc;
     } catch (ex) {
       if (ex.response && ex.response === 400) {
         const errors = { ...this.state.errors };
@@ -47,6 +49,7 @@ class LoginForm extends Form {
   };
 
   render() {
+    if (getActiveUser()) return <Redirect to="/" />;
     return (
       <div>
         <h1>Login Form</h1>

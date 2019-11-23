@@ -23,12 +23,16 @@ class App extends Component {
     this.setState({ user });
   }
 
+  handleUserUpdate() {
+    const user = getActiveUser();
+    this.setState({ user });
+  }
+
   render() {
-    const user = this.state.user;
     return (
       <React.Fragment>
         <ToastContainer />
-        <Navbar user={user} />
+        <Navbar user={this.state.user} />
         <main className="container">
           <Switch>
             <Route path="/login" component={LoginForm} />
@@ -37,8 +41,8 @@ class App extends Component {
             <Route
               path="/movies/:id"
               render={props => {
-                console.log(user);
-                if (!user)
+                // Don't know why, but user in state didn't get update when this route was hit as a result of login
+                if (!getActiveUser())
                   return (
                     <Redirect
                       to={{

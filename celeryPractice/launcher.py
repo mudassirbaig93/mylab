@@ -6,7 +6,7 @@ from tasks import *
 
 #reverse_string.delay('Hello')
 
-Another method
+#Another method
 reverse_string.apply_async(kwargs={'string': "Hello"},
         retry_policy=dict(
         max_retries=3,
